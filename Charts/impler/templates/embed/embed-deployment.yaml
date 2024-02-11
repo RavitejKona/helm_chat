@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{.Values.embed.app_name}}
+  namespace: {{.Values.namespace}}
+spec:
+  selector:
+    matchLabels:
+      app: {{.Values.embed.app_name}}
+  replicas: {{.Values.embed.replicas}}
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: {{.Values.embed.app_name}}
+    spec:
+      containers:
+        - name: {{.Values.embed.app_name}}
+          image: {{.Values.embed.image}}
+          imagePullPolicy: Always
+          ports:
+            - containerPort: {{.Values.embed.service.port}}
+              protocol: TCP             
+          env:
+            - name: WIDGET_URL
+              value: {{.Values.env.WIDGET_BASE_URL}}

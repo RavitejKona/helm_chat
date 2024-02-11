@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{.Values.rabbit_mq.app_name}}
+  namespace: {{.Values.namespace}}
+spec:
+  selector:
+    matchLabels:
+      app: {{.Values.rabbit_mq.app_name}}
+  replicas: {{.Values.rabbit_mq.replicas}}
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: {{.Values.rabbit_mq.app_name}}
+    spec:
+      containers:
+        - name: {{.Values.rabbit_mq.app_name}}
+          image: rabbitmq:3-alpine
+          imagePullPolicy: Always
+          ports:
+            - containerPort: {{.Values.rabbit_mq.service.port}}
+              protocol: TCP

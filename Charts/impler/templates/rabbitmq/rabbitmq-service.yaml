@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+   name: {{.Values.rabbit_mq.service.service_name}}
+   namespace: {{.Values.namespace}}
+   labels:
+      app: {{.Values.rabbit_mq.app_name}}
+spec:
+   selector:
+      app: {{.Values.rabbit_mq.app_name}}
+   type: NodePort
+   ports:
+     - name: {{.Values.rabbit_mq.service.port_name}}
+       protocol: TCP
+       port: {{.Values.rabbit_mq.service.port}}
+       targetPort: {{.Values.rabbit_mq.service.port}}

@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{.Values.web.app_name}}
+  namespace: {{.Values.namespace}}
+spec:
+  selector:
+    matchLabels:
+      app: {{.Values.web.app_name}}
+  replicas: {{.Values.web.replicas}}
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: {{.Values.web.app_name}}
+    spec:
+      containers:
+        - name: {{.Values.web.app_name}}
+          image: {{.Values.web.image}}
+          imagePullPolicy: Always
+          ports:
+            - containerPort: {{.Values.web.service.port}}
+              protocol: TCP
+          env:
+            - name: NEXT_PUBLIC_API_BASE_URL
+              value: {{.Values.env.API_ROOT_URL}}
+            - name: NEXT_PUBLIC_EMBED_URL
+              value: {{.Values.env.WIDGET_EMBED_PATH}}
+            - name: NEXT_PUBLIC_AMPLITUDE_ID
+              value: {{.Values.env.WEB_AMPLITUDE_ID}}
+            - name: NEXT_PUBLIC_GTM_ID
+              value: {{.Values.env.NEXT_PUBLIC_GTM_ID}}
+            - name: NEXT_PUBLIC_GOOGLE_ANALYTICS_ID
+              value: {{.Values.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID}}

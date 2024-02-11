@@ -1,0 +1,59 @@
+---
+namespace: impler
+env:
+  JWT_SECRET: ""
+  NODE_ENV: local
+  MONGO_URL: ""
+  RABBITMQ_CONN_URL: amqp://guest:guest@rabbitmq:5672
+  S3_LOCAL_STACK: ""
+  S3_BUCKET_NAME: ""
+  S3_REGION: ""
+  AWS_ACCESS_KEY_ID: ""
+  AWS_SECRET_ACCESS_KEY: ""
+  API_PORT: ""
+  WIDGET_BASE_URL: http://localhost:3500
+  WEB_BASE_URL: http://localhost:4200
+  API_ROOT_URL: https://apiimpler.teleteachers.us
+  WIDGET_EMBED_PATH: https://embedimpler.teleteachers.us/embed.umd.min.js
+  SENTRY_DSN: ""
+  WIDGET_AMPLITUDE_ID: ""
+  WEB_AMPLITUDE_ID: ""
+  COOKIE_DOMAIN: ""
+  GITHUB_OAUTH_CLIENT_ID: ""
+  GITHUB_OAUTH_CLIENT_SECRET: ""
+  GITHUB_OAUTH_REDIRECT: /v1/auth/github/callback
+  SES_REGION: ""
+  SES_ACCESS_KEY_ID: ""
+  SES_SECRET_ACCESS_KEY: ""
+  EMAIL_FROM: ""
+  EMAIL_FROM_NAME: ""
+  EXECUTION_MODE: SANDBOXED
+  NEXT_PUBLIC_GOOGLE_ANALYTICS_ID: ""
+  NEXT_PUBLIC_GTM_ID: ""
+web:
+  app_name: impler-web
+  replicas: 1
+  image: ghcr.io/implerhq/impler/web:4534b0b44e2f3138c3f42ef0ec257d63247e4a58
+  service:
+    service_name: impler-web-service
+    port: 4200
+    port_name: implerweb-port
+embed:
+  app_name: impler-embed
+  replicas: 1
+  image: ghcr.io/implerhq/impler/embed:0.15.
+  service:
+    port: 4701
+    service_name: impler-embed-service
+    port_name: implerembed-port
+queue_manager:
+  app_name: impler-queue_manager
+  replicas: 1
+  image: ghcr.io/implerhq/impler/queue-manager:0.15.0
+rabbit_mq:
+  app_name: impler-rabbitmq
+  replicas: 1
+  service:
+    port: 5672
+    service_name: impler-rabbitmq-service
+    port_name: implerrtmq-port
