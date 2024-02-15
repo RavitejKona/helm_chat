@@ -3,12 +3,12 @@ entries:
   impler:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2024-02-15T15:01:05.2403422+05:30"
+    created: "2024-02-15T16:16:31.9484551+05:30"
     description: A Helm chart for Kubernetes
-    digest: 57e945c2bfad61fa1741d330002e3ed4744e0db56c73817b7564691f1680bc5a
+    digest: b1b7f21d71d866d54003f9e54813bd9a0e2a929170f8ac0e2dab8e9288ce72d7
     name: impler
     type: application
     urls:
     - package/impler-0.1.0.tgz
     version: 0.1.0
-generated: "2024-02-15T15:01:05.2381282+05:30"
+generated: "2024-02-15T16:16:31.9473192+05:30"
