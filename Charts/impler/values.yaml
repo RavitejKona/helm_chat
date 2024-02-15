@@ -46,8 +46,8 @@ embed:
     port: 4701
     service_name: impler-embed-service
     port_name: implerembed-port
-queue_manager:
-  app_name: impler-queue_manager
+queueManager:
+  app_name: impler-queue-manager
   replicas: 1
   image: ghcr.io/implerhq/impler/queue-manager:0.15.0
 rabbit_mq:
