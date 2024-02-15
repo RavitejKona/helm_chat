@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{.Values.queue_manager.app_name}}
+  namespace: {{.Values.namespace}}
+spec:
+  selector:
+    matchLabels:
+      app: {{.Values.queue_manager.app_name}}
+  replicas: {{.Values.queue_manager.replicas}}
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: {{.Values.queue_manager.app_name}}
+    spec:
+      containers:
+        - name: {{.Values.queue_manager.app_name}}
+          image: {{.Values.queue_manager.image}}
+          imagePullPolicy: Always         
+          env:
+            - name: NODE_ENV
+              value : {{.Values.env.NODE_ENV}}
+            - name: MONGO_URL
+              value : {{.Values.env.MONGO_URL}}
+            - name: RABBITMQ_CONN_URL
+              value : {{.Values.env.RABBITMQ_CONN_URL}}
+            - name: S3_REGION
+              value : {{.Values.env.S3_REGION}}
+            - name: S3_LOCAL_STACK
+              value : {{.Values.env.S3_LOCAL_STACK}}
+            - name: S3_BUCKET_NAME
+              value : {{.Values.env.S3_BUCKET_NAME}}
+            - name: AWS_ACCESS_KEY_ID
+              value : {{.Values.env.AWS_ACCESS_KEY_ID}}
+            - name: AWS_SECRET_ACCESS_KEY
+              value : {{.Values.env.AWS_SECRET_ACCESS_KEY}}
