@@ -57,3 +57,12 @@ rabbit_mq:
     port: 5672
     service_name: impler-rabbitmq-service
     port_name: implerrtmq-port
+
+widget:
+  app_name: impler-widget
+  replicas: 1
+  image: bhavikchavda/widget:0.15.0
+  service:
+    port: 80
+    service_name: impler-widget-service
+    port_name: implerwgt-port   

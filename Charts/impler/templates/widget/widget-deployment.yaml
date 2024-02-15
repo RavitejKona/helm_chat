@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{.Values.widget.app_name}}
+  namespace: {{.Values.namespace}}
+spec:
+  selector:
+    matchLabels:
+      app: {{.Values.widget.app_name}}
+  replicas: {{.Values.widget.replicas}}
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: {{.Values.widget.app_name}}
+    spec:
+      containers:
+        - name: {{.Values.widget.app_name}}
+          image: {{.Values.widget.image}}
+          imagePullPolicy: Always
+          ports:
+            - containerPort: {{.Values.widget.service.port}}
+              protocol: TCP             
+          env:
+            - name: REACT_APP_API_URL
+              value: {{.Values.env.API_ROOT_URL}}
+            # - name: REACT_APP_SENTRY_DSN
+            #   value: 
+            - name: REACT_APP_ENVIRONMENT
+              value: {{.Values.env.NODE_ENV}}      
+            # - name: REACT_APP_AMPLITUDE_ID
+            #   value: 
