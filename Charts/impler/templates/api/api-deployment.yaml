@@ -1,0 +1,87 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{.Values.api.app_name}}
+  namespace: {{.Values.namespace}}
+spec:
+  selector:
+    matchLabels:
+      app: {{.Values.api.app_name}}
+  replicas: {{.Values.api.replicas}}
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: {{.Values.api.app_name}}
+    spec:
+      containers:
+        - name: {{.Values.api.app_name}}
+          image: {{.Values.api.image}}
+          imagePullPolicy: Always
+          ports:
+            - containerPort: {{.Values.api.service.port}}
+              protocol: TCP
+          env:
+            - name: PORT
+              value: "3000"
+            # Add other environment variables here
+            - name: WIDGET_BASE_URL
+              value: {{.Values.env.WIDGET_BASE_URL}}
+            - name: WEB_BASE_URL
+              value: {{.Values.env.WEB_BASE_URL}}
+            - name: MONGO_URL
+              value: {{.Values.env.MONGO_URL}}
+            - name: S3_REGION
+              value: {{.Values.env.S3_REGION}}
+            - name: S3_LOCAL_STACK
+              value: {{.Values.env.S3_LOCAL_STACK}}
+            - name: S3_BUCKET_NAME
+              value: {{.Values.env.S3_BUCKET_NAME}}
+            - name: JWT_SECRET
+              value: {{.Values.env.JWT_SECRET}}
+            - name: RABBITMQ_CONN_URL
+              value: {{.Values.env.RABBITMQ_CONN_URL}}
+            # Add other environment variables here
+            - name: COOKIE_DOMAIN
+              value: {{.Values.env.COOKIE_DOMAIN}}            
+            - name: AWS_ACCESS_KEY_ID
+              value: {{.Values.env.AWS_ACCESS_KEY_ID}}
+            - name: AWS_SECRET_ACCESS_KEY
+              value : {{.Values.env.AWS_SECRET_ACCESS_KEY}}
+            - name: GITHUB_OAUTH_CLIENT_ID
+              value: {{.Values.env.GITHUB_OAUTH_CLIENT_ID}}
+            - name: GITHUB_OAUTH_CLIENT_SECRET
+              value: {{.Values.env.GITHUB_OAUTH_CLIENT_SECRET}}
+            - name: GITHUB_OAUTH_REDIRECT
+              value: "/v1/auth/github/callback"
+            - name: SES_REGION
+              value: {{.Values.env.SES_REGION}}
+            - name: SES_ACCESS_KEY_ID
+              value: {{.Values.env.SES_ACCESS_KEY_ID}}
+            - name: SES_SECRET_ACCESS_KEY
+              value: {{.Values.env.SES_SECRET_ACCESS_KEY}}
+            - name: EMAIL_FROM
+              value: {{.Values.env.EMAIL_FROM}}
+            - name: EMAIL_FROM_NAME
+              value: {{.Values.env.EMAIL_FROM_NAME}}               
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{.Values.api.service.service_name}}
+  namespace: {{.Values.namespace}}
+  labels:
+    app: {{.Values.api.app_name}}
+spec:
+  selector:
+    app: {{.Values.api.app_name}}
+  type: NodePort
+  ports:
+    - name: {{.Values.api.service.port_name}}
+      protocol: TCP
+      port: {{.Values.api.service.port}}
+      targetPort: {{.Values.api.service.port}}

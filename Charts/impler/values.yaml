@@ -4,7 +4,7 @@ env:
   JWT_SECRET: ""
   NODE_ENV: local
   MONGO_URL: ""
-  RABBITMQ_CONN_URL: amqp://guest:guest@rabbitmq:5672
+  RABBITMQ_CONN_URL: amqp://guest:guest@impler-rabbitmq-service:5672
   S3_LOCAL_STACK: ""
   S3_BUCKET_NAME: ""
   S3_REGION: ""
@@ -57,7 +57,6 @@ rabbit_mq:
     port: 5672
     service_name: impler-rabbitmq-service
     port_name: implerrtmq-port
-
 widget:
   app_name: impler-widget
   replicas: 1
@@ -65,4 +64,12 @@ widget:
   service:
     port: 80
     service_name: impler-widget-service
-    port_name: implerwgt-port   
+    port_name: implerwgt-port
+api:
+  app_name: impler-api
+  replicas: 1
+  image: ghcr.io/implerhq/impler/api:0.15.0
+  service:
+    port: 80
+    service_name: impler-api-service
+    port_name: implerapi-port  
