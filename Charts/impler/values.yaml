@@ -76,5 +76,19 @@ api:
     port_name: implerapi-port  
 
 ingress:
+  apiVersion : networking.k8s.io/v1
   enabled : true
-  annotations: {}
+  annotations : {}
+  ingressClassName : alb
+  hostname_web :
+  path_web : /
+  pathType_web : Prefix
+  hostname_api : 
+  path_api : /
+  pathType_api :   Prefix
+  hostname_widget :
+  path_widget : /
+  pathType_widget :    Prefix
+  hostname_embed :
+  path_embed : /
+  pathType_embed : Prefix
