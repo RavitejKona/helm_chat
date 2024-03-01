@@ -1,0 +1,84 @@
+{{- if .Values.ingress.enabled }}
+apiVersion: {{ include "cube.ingress.apiVersion" . }}
+kind: Ingress
+metadata:
+  name: {{ include "cube.fullname" . }}
+  labels: 
+    {{- if .Values.commonLabels }}
+    {{- toYaml .Values.commonLabels | nindent 4 }}
+    {{- end }}
+  {{- if or .Values.ingress.annotations .Values.commonAnnotations }}
+  annotations:
+    {{- if .Values.commonAnnotations }}
+    {{- toYaml .Values.commonAnnotations | nindent 4 }}
+    {{- end }}
+    {{- if .Values.ingress.annotations }}
+    {{- toYaml .Values.ingress.annotations | nindent 4 }}
+    {{- end }}
+  {{- end }}
+spec:
+  {{- if and .Values.ingress.ingressClassName }}
+  ingressClassName: {{ .Values.ingress.ingressClassName | quote }}
+  {{- end }}
+  rules:
+    {{- if .Values.ingress.hostname_web }}
+    - host: {{ .Values.ingress.hostname_web }}
+      http:
+        paths:
+          - path: {{ .Values.ingress.path_web }}
+            pathType: {{ .Values.ingress.pathType_web }}
+            {{- end }}
+            backend:
+              service:
+                name: {{.Values.web.service.service_name}}
+                port:
+                  name: {{.Values.web.service.port_name}}
+    {{- end }}                  
+    {{- if .Values.ingress.hostname_api }}                  
+    - host: {{ .Values.ingress.hostname_api }}
+      http:
+        paths:
+          - path: {{ .Values.ingress.path_api }}
+            pathType: {{ .Values.ingress.pathType_api }}
+            {{- end }}
+            backend:
+              service:
+                name:  {{.Values.api.service.service_name}}
+                port:
+                  name: {{.Values.api.service.port_name}}
+    {{- end }}            
+    {{- if .Values.ingress.hostname_widget }}             
+    - host: {{ .Values.ingress.hostname_widget }}
+      http:
+        paths:
+          - path: {{ .Values.ingress.path_widget }}
+            pathType: {{ .Values.ingress.pathType_widget }}
+            {{- end }}
+            backend:
+              service:
+                name: {{.Values.widget.service.service_name}}
+                port:
+                  name: {{.Values.widget.service.port_name}}
+    {{- end }}
+    {{- if .Values.ingress.hostname_embed }}             
+    - host: {{ .Values.ingress.hostname_embed }}
+      http:
+        paths:
+          - path: {{ .Values.ingress.path_embed }}
+            pathType: {{ .Values.ingress.pathType_embed }}
+            {{- end }}
+            backend:
+              service:
+                name: {{.Values.embed.service.service_name}}
+                port:
+                  name: {{.Values.embed.service.port_name}}
+    {{- end }}    
+  {{- if .Values.ingress.tls  }}
+  tls:
+    {{- if .Values.ingress.tls }}
+    - hosts:
+        - {{ .Values.ingress.hostname }}
+      secretName: {{ printf "%s-tls" .Values.ingress.hostname }}
+    {{- end }}
+  {{- end }}
+{{- end }}
